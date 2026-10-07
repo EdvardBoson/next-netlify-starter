@@ -1,90 +1,63 @@
-# Next + Netlify Starter
+# Arena – digital plattform för idrott & gym
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/46648482-644c-4c80-bafb-872057e51b6b/deploy-status)](https://app.netlify.com/sites/next-dev-starter/deploys)
+Arena är ett verktyg för att digitalisera vardagen i idrottsföreningar och gym. En och samma plattform hanterar
+medlemmar, schema och bokning, incheckning, lag och närvaro (inklusive underlag för LOK-stöd) samt fakturering.
 
-This is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up to be instantly deployed to [Netlify](https://url.netlify.com/SyTBPVamO)!
+Den här versionen är en fungerande **MVP** som går att demonstrera direkt för kunder: den startar med realistisk
+exempeldata och sparar ändringar i webbläsaren.
 
-This project is a very minimal starter that includes 2 sample components, a global stylesheet, a `netlify.toml` for deployment, and a `jsconfig.json` for setting up absolute imports and aliases. With Netlify, you'll have access to features like Preview Mode, server-side rendering/incremental static regeneration via Netlify Functions, and internationalized routing on deploy automatically.
+## Moduler
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/next-netlify-starter&utm_source=github&utm_medium=nextstarter-cs&utm_campaign=devex-cs)
+| Modul | Vad den gör |
+| --- | --- |
+| **Översikt** | Nyckeltal: aktiva medlemmar, återkommande intäkter (MRR), incheckningar, beläggning, obetalt, LOK-grundande sammankomster. |
+| **Medlemmar** | Medlemsregister med sök, filter, medlemskap, lagtillhörighet och CSV-export. |
+| **Schema & bokning** | Veckoschema, återkommande pass, bokning med kapacitet, kö och automatisk uppflyttning vid avbokning. |
+| **Incheckning** | Kioskläge för reception/surfplatta. Fungerar med streckkods-/QR-läsare. Nekar inaktiva medlemmar och varnar för förfallna fakturor. |
+| **Lag & närvaro** | Lag/grupper, närvarorapportering per sammankomst, närvaro per spelare och LOK-stödsbedömning med CSV-export. |
+| **Ekonomi** | Medlemskap och priser, fakturagenerering per period (idempotent), betalstatus och export. |
+| **Inställningar** | Organisationsuppgifter, export/import av all data (JSON) och återställning av exempeldata. |
 
-(If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify)
-
-## Table of Contents:
-
-- [Getting Started](#getting-started)
-- [Installation options](#installation-options)
-- [Testing](#testing)
-  - [Included Default Testing](#included-default-testing)
-  - [Removing Renovate](#removing-renovate)
-  - [Removing Cypress](#removing-cypress)
-
-## Getting Started
-
-First, run the development server:
+## Kom igång
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm install
+npm run dev      # http://localhost:3000
+npm test         # enhetstester för affärslogiken
+npm run build    # produktionsbygge
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Projektet deployas till Netlify som tidigare (`netlify.toml`).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Arkitektur
 
-### Installation options
-
-**Option one:** One-click deploy
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/next-netlify-starter&utm_source=github&utm_medium=nextstarter-cs&utm_campaign=devex-cs)
-
-**Option two:** Manual clone
-
-1. Clone this repo: `git clone https://github.com/netlify-templates/next-netlify-starter.git`
-2. Navigate to the directory and run `npm install`
-3. Run `npm run dev`
-4. Make your changes
-5. Connect to [Netlify](https://url.netlify.com/Bk4UicocL) manually (the `netlify.toml` file is the one you'll need to make sure stays intact to make sure the export is done and pointed to the right stuff)
-
-## Testing
-
-### Included Default Testing
-
-We’ve included some tooling that helps us maintain these templates. This template currently uses:
-
-- [Renovate](https://www.mend.io/free-developer-tools/renovate/) - to regularly update our dependencies
-- [Cypress](https://www.cypress.io/) - to run tests against how the template runs in the browser
-- [Cypress Netlify Build Plugin](https://github.com/cypress-io/netlify-plugin-cypress) - to run our tests during our build process
-
-If your team is not interested in this tooling, you can remove them with ease!
-
-### Removing Renovate
-
-In order to keep our project up-to-date with dependencies we use a tool called [Renovate](https://github.com/marketplace/renovate). If you’re not interested in this tooling, delete the `renovate.json` file and commit that onto your main branch.
-
-### Removing Cypress
-
-For our testing, we use [Cypress](https://www.cypress.io/) for end-to-end testing. This makes sure that we can validate that our templates are rendering and displaying as we’d expect. By default, we have Cypress not generate deploy links if our tests don’t pass. If you’d like to keep Cypress and still generate the deploy links, go into your `netlify.toml` and delete the plugin configuration lines:
-
-```diff
-[[plugins]]
-  package = "netlify-plugin-cypress"
--  [plugins.inputs.postBuild]
--    enable = true
--
--  [plugins.inputs]
--    enable = false 
+```
+lib/logic.mjs     Ren affärslogik (bokning, kö, incheckning, fakturering, LOK, statistik, CSV) – testad
+lib/seed.mjs      Exempeldata relativt dagens datum
+lib/store.js      React-context som håller state och sparar i localStorage
+components/       Layout och små UI-komponenter
+pages/            En sida per modul (Next.js pages router)
+tests/            Enhetstester (node:test)
 ```
 
-If you’d like to remove the `netlify-plugin-cypress` build plugin entirely, you’d need to delete the entire block above instead. And then make sure sure to remove the package from the dependencies using:
+All affärslogik är rena funktioner `(state, …) => { state, … } | { error }`. Det gör dem lätta att testa och att
+flytta till ett backend-API utan att skriva om reglerna.
 
-```bash
-npm uninstall -D netlify-plugin-cypress
-```
+## LOK-stöd
 
-And lastly if you’d like to remove Cypress entirely, delete the entire `cypress` folder and the `cypress.config.ts` file. Then remove the dependency using:
+Närvaromodulen bedömer om en sammankomst är LOK-stödsgrundande enligt standardreglerna i `LOK_RULES`
+(7–25 år, minst 3 deltagare, minst 60 minuter, max 30 deltagare räknas). Reglerna ändras ibland –
+kontrollera alltid mot Riksidrottsförbundets aktuella regler innan rapportering.
 
-```bash
-npm uninstall -S cypress
-```
+## Färdplan mot produktion
+
+MVP:n sparar data lokalt per webbläsare. För att använda Arena i skarp drift hos en kund:
+
+1. **Backend & databas** – ersätt `load`/`save` i `lib/store.js` med API-anrop (t.ex. Netlify Functions + Postgres
+   via Supabase/Neon). Logiken i `lib/logic.mjs` kan köras oförändrad på servern.
+2. **Inloggning & roller** – admin, receptionist, tränare/ledare och medlem (t.ex. BankID eller e-postlänk).
+3. **GDPR** – personuppgiftsbiträdesavtal, behörighetsstyrning, loggning och gallringsrutiner för medlemsdata.
+4. **Betalningar** – Swish, autogiro (Bankgirot) och kortbetalning (t.ex. Stripe), automatiska påminnelser.
+5. **Medlemsapp** – självservice: boka/avboka pass, digitalt medlemskort med QR-kod, betala avgifter.
+6. **Integrationer** – IdrottOnline/LOK-rapportering, passersystem/dörrlås, bokföring (Fortnox/Visma).
+7. **Kommunikation** – e-post/SMS-utskick till lag och medlemsgrupper.
