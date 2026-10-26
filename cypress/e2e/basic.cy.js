@@ -36,5 +36,10 @@ describe('Styrkeloggen', () => {
     cy.contains('button', 'Personbästa').click()
     cy.contains('.records td', 'Knäböj')
     cy.contains('.records td', '116,7 kg')
+
+    cy.contains('button', 'Utveckling').click()
+    cy.get('.chart svg').should('have.length', 2)
+    cy.get('.chart-dot').should('have.length', 1)
+    cy.contains('.stat', 'Senaste').contains('116,7 kg')
   })
 })

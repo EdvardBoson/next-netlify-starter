@@ -8,6 +8,8 @@
   --accent-text: #ffffff;
   --danger: #c62828;
   --input-bg: #ffffff;
+  --series-1: #2a78d6;
+  --grid: #e6e8ec;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,8 @@
     --accent-text: #0b0d10;
     --danger: #ff6b6b;
     --input-bg: #14161a;
+    --series-1: #3987e5;
+    --grid: #2a2e35;
   }
 }
 
@@ -158,6 +162,7 @@ button:disabled {
 
 /* Formulär */
 input,
+select,
 textarea {
   font: inherit;
   color: var(--text);
@@ -170,6 +175,7 @@ textarea {
 }
 
 input:focus,
+select:focus,
 textarea:focus {
   outline: 2px solid var(--accent);
   outline-offset: -1px;
@@ -254,6 +260,8 @@ textarea:focus {
 
 .tabs button {
   background: none;
+  padding: 0.55rem 0.25rem;
+  white-space: nowrap;
   color: var(--muted);
   border-radius: 0;
   border-bottom: 2px solid transparent;
@@ -353,4 +361,127 @@ textarea:focus {
   justify-content: center;
   gap: 1.5rem;
   font-size: 0.9rem;
+}
+
+/* Utveckling */
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.stat-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.stat strong {
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-title {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.card > .chart-title:first-child {
+  margin-top: 0;
+}
+
+.chart {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.chart svg {
+  display: block;
+  overflow: visible;
+}
+
+.chart-grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.chart-tick {
+  fill: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--series-1);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-area {
+  fill: var(--series-1);
+  opacity: 0.1;
+}
+
+.chart-dot {
+  fill: var(--series-1);
+  stroke: var(--card);
+  stroke-width: 2;
+}
+
+.chart-crosshair {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart-bar {
+  fill: var(--series-1);
+  opacity: 0.85;
+}
+
+.chart-bar.active {
+  opacity: 1;
+}
+
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  z-index: 1;
+}
+
+.table-toggle {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.table-toggle summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.table-toggle table {
+  margin-top: 0.5rem;
 }

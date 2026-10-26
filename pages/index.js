@@ -5,6 +5,7 @@ import Footer from '@components/Footer'
 import WorkoutForm from '@components/WorkoutForm'
 import WorkoutList from '@components/WorkoutList'
 import PersonalRecords from '@components/PersonalRecords'
+import ProgressCharts from '@components/ProgressCharts'
 import { emptyWorkout, exerciseNames, personalRecords, useWorkouts } from '@lib/workouts'
 
 export default function Home() {
@@ -91,13 +92,24 @@ export default function Home() {
               >
                 Personbästa
               </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === 'progress'}
+                className={tab === 'progress' ? 'active' : ''}
+                onClick={() => setTab('progress')}
+              >
+                Utveckling
+              </button>
             </nav>
 
             <section className="section">
               {!loaded ? null : tab === 'history' ? (
                 <WorkoutList workouts={workouts} onEdit={(w) => setEditing(w)} onDelete={deleteWorkout} />
-              ) : (
+              ) : tab === 'records' ? (
                 <PersonalRecords records={personalRecords(workouts)} />
+              ) : (
+                <ProgressCharts workouts={workouts} />
               )}
             </section>
 
