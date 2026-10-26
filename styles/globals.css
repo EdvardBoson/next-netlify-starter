@@ -1,7 +1,35 @@
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --text: #1c1e21;
+  --muted: #65676b;
+  --border: #dcdfe4;
+  --accent: #2563eb;
+  --accent-text: #ffffff;
+  --danger: #c62828;
+  --input-bg: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317;
+    --card: #1b1e24;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --border: #30343c;
+    --accent: #4f8cff;
+    --accent-text: #0b0d10;
+    --danger: #ff6b6b;
+    --input-bg: #14161a;
+  }
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -10,26 +38,319 @@ body {
   box-sizing: border-box;
 }
 
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+}
+
 main {
-  padding: 5rem 0;
+  width: 100%;
+  max-width: 680px;
+  padding: 2.5rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 1.25rem;
 }
 
-code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-family: Menlo, Monaco, Lucida Console, Courier New, monospace;
+.header {
+  text-align: center;
 }
 
-.container {
-  height: 100vh;
+.title {
+  margin: 0;
+  font-size: 2.25rem;
+}
+
+.description {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0.15rem 0 0;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem 0;
+}
+
+.error {
+  color: var(--danger);
+  margin: 0;
+}
+
+/* Knappar */
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.55rem 1rem;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.primary.big {
+  padding: 0.85rem;
+  font-size: 1.1rem;
+}
+
+.secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.link-button {
+  background: none;
+  color: var(--accent);
+  padding: 0.25rem 0;
+}
+
+.link-button.danger {
+  color: var(--danger);
+}
+
+.icon-button {
+  background: none;
+  color: var(--muted);
+  padding: 0.25rem 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Formulär */
+input,
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  width: 100%;
+  min-width: 0;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.field.grow {
+  flex: 1;
+  min-width: 180px;
+}
+
+.exercise {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin: 0;
+}
+
+.exercise-header {
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
+}
+
+.exercise-name {
+  font-weight: 600;
+}
+
+.sets {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.set-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr 1fr 2.25rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.set-labels {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.set-number {
+  text-align: center;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Flikar */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabs button {
+  background: none;
+  color: var(--muted);
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  flex: 1;
+}
+
+.tabs button.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Historik */
+.workout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.workout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.workout-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.stats {
+  margin: 0.6rem 0;
+  font-size: 0.9rem;
+}
+
+.exercise-summary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.exercise-summary li {
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-summary .muted {
+  font-size: 0.9rem;
+}
+
+.notes {
+  margin: 0.75rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+  font-style: italic;
+  white-space: pre-wrap;
+}
+
+/* Personbästa */
+.table-wrap {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.records {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.records th,
+.records td {
+  text-align: left;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.records tr:last-child td {
+  border-bottom: none;
+}
+
+.records th {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.backup {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.9rem;
 }
